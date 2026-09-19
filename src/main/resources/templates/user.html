@@ -4,6 +4,12 @@
     <title>Spring Security Example</title>
 </head>
 <body>
+<span th:text="${user.name}"></span>
+    <div th:each="role : ${user.roles}">
+        <span th:text="${role.roleName}"></span>
+    </div>
+
+
 <h1>User, welcome spring boot security page!</h1>
 
 
