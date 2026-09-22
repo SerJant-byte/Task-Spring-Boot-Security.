@@ -13,5 +13,13 @@
 <h1>User, welcome spring boot security page!</h1>
 
 
+
+<form method="post" action="/logout">
+    <input type="hidden"
+    th:name="${_csrf.parameterName}"
+    th:value="${_csrf.token}">
+    <button type="submit">Logout</button>
+
+</form>
 </body>
 </html>
