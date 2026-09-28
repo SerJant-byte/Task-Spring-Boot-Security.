@@ -4,7 +4,6 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.List;
@@ -34,14 +33,6 @@ public class UserController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/edit")
-    public String updateUserControler( Model model, @PathVariable Long id) {
-        User user = userService.getUser(id);
-        Set<Role> roles = user.getRoles();
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roles);
-        return  "edit";
-    }
 
     @PostMapping("/{id}/edit")
     public String updateUserControler(@RequestParam String name,
