@@ -28,17 +28,16 @@ public class UserServiceImpl implements UserService {
     }
     @Transactional
     @Override
-    public void addUser( User user, Set<String> role) {
+    public User addUser( User user, Set<String> role) {
         Set<Role> roles = new HashSet<>();
         for ( String roleName : role ) {
             Role userRole = roleRepository.findByRoleName(roleName);
             roles.add(userRole);
-
         }
-
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        User user1 = userRepository.save(user);
+        return user1;
     }
 
     @Override

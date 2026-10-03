@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService {
-        void addUser( User user, Set<String> role);
+        User addUser( User user, Set<String> role);
         List<User> getUsers();
         User updateUser(String name,
                         String password,

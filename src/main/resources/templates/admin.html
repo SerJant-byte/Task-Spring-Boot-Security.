@@ -60,152 +60,68 @@
                                 </tr>
                                 </thead>
 
-                                <tbody>
-                                <tr th:each="user : ${users}">
-                                    <td th:text="${user.id}"></td>
-                                    <td th:text="${user.name}"></td>
-                                    <td>
-                        <span th:each="role : ${user.roles}"
-                              th:text="${role.roleName + ' '}">
-                        </span>
-                                    </td>
-                                    <td>
-                                        <button type="button"
-                                                class="btn btn-primary"
-                                                data-toggle="modal"
-                                                th:attr="data-target='#editModal' + ${user.id}">
-                                            Edit user
-                                        </button>
-                                        <button type="button" class="btn btn-danger"
-                                                data-toggle="modal"
-                                                th:attr="data-target='#deleteModal' + ${user.id}">Delete
-                                        </button>
-                                    </td>
+                                <tbody id="usersTableBody">
 
-                                </tr>
                                 </tbody>
 
                             </table>
 
-                            <div th:each="user : ${users}">
-                                <div class="modal" th:id="'editModal' + ${user.id}">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Edit user
-                                                </h4>
-                                                <button type="button" class="close" data-dismiss="modal">
-                                                    &times;
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="post"
-                                                      th:action="@{/admin/{id}/edit(id=${user.id})}"
-                                                      th:id="'editForm' + ${user.id}">
-
-                                                    <input type="hidden"
-                                                           th:name="${_csrf.parameterName}"
-                                                           th:value="${_csrf.token}">
-
-                                                    <div class="form-group">
-                                                        <label class="text-center font-weight-bold d-block">Name</label>
-                                                        <input class="form-control" type="text" name="name"
-                                                               th:value="${user.name}">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="text-center font-weight-bold d-block">Password</label>
-                                                        <input class="form-control" type="password" name="password">
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="text-center font-weight-bold d-block">Role</label>
-                                                        <select multiple name="role" class="form-control">
-                                                            <option value="ROLE_USER" th:selected="${#lists.contains
-                                                                (user.roles.![roleName], 'ROLE_USER')}">USER
-                                                            </option>
-                                                            <option value="ROLE_ADMIN" th:selected="${#lists.contains
-                                                                (user.roles.![roleName], 'ROLE_ADMIN')}">ADMIN
-                                                            </option>
-                                                        </select>
-                                                    </div>
-
-
-                                                </form>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close
-                                                    </button>
-                                                    <button type="submit" class="btn btn-primary"
-                                                            th:form="'editForm' + ${user.id}">Edit user
-                                                    </button>
-                                                </div>
-
-                                            </div>
+                            <div class="modal" id="editUserModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Edit user
+                                            </h4>
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                &times;
+                                            </button>
                                         </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div th:each="user : ${users}">
-                                <div class="modal" th:id="'deleteModal' + ${user.id}">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Delete user</h4>
-                                                <button type="button"
-                                                        class="close"
-                                                        data-dismiss="modal">
-                                                    &times;
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="post"
-                                                      th:action="@{/admin/{id}/delete(id=${user.id})}"
-                                                      th:id="'deleteForm' + ${user.id}">
-                                                    <input type="hidden"
-                                                           th:name="${_csrf.parameterName}"
-                                                           th:value="${_csrf.token}">
-                                                </form>
+                                        <div class="modal-body">
+                                            <form id="editUserForm">
+                                                <input type="hidden"
+                                                       th:name="${_csrf.parameterName}"
+                                                       th:value="${_csrf.token}">
 
                                                 <div class="form-group">
-                                                <label class="text-center font-weight-bold d-block">Id</label>
-                                                <div class="form-control bg-light text-center" th:text="${user.id}"></div>
+                                                    <label class="text-center font-weight-bold d-block">Name</label>
+                                                    <input class="form-control" type="text" name="name"
+                                                           id="editUserName">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="text-center font-weight-bold d-block">Password</label>
+                                                    <input class="form-control" type="password" name="password">
                                                 </div>
 
                                                 <div class="form-group">
-                                                <label class="text-center font-weight-bold d-block">Name</label>
-                                                <div class="form-control bg-light text-center" th:text="${user.name}"></div>
+                                                    <label class="text-center font-weight-bold d-block">Role</label>
+                                                    <select multiple name="role" class="form-control">
+                                                        <option value="ROLE_USER">USER</option>
+                                                        <option value="ROLE_ADMIN">ADMIN
+                                                        </option>
+                                                    </select>
                                                 </div>
 
-                                                <div class="form-group">
-                                                <label class="text-center font-weight-bold d-block">Role</label>
-                                                <div class="form-control bg-light text-center">
-                                                <span th:each="role : ${user.roles}"
-                                                      th:text="${role.roleName + ' '}"></span>
-                                                </div>
-                                                </div>
-                                            </div>
+
+                                            </form>
+
                                             <div class="modal-footer">
-                                                <button type="button"
-                                                        class="btn btn-secondary"
+                                                <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Close
                                                 </button>
-                                                <button type="submit"
-                                                        class="btn btn-primary"
-                                                        th:form="'deleteForm' + ${user.id}">
-                                                    Delete
+                                                <button type="submit" class="btn btn-primary" id="editUserButton">
+                                                    Edit user
                                                 </button>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="newUser">
+                <div class="tab-pane fade" id="newUser">
                     <div class="card">
                         <div class="card-header">
                             <h3>Add new user</h3>
@@ -213,7 +129,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4 offset-md-4">
-                                    <form method="post">
+                                    <form id="newUserForm">
                                         <input type="hidden"
                                                th:name="${_csrf.parameterName}"
                                                th:value="${_csrf.token}">
@@ -258,6 +174,202 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+<script>
+    let editUserId;
+    fetch("/api/users")
+        .then(response => response.json())
+        .then(users => {
+            const tableBody = document.getElementById("usersTableBody");
+            users.forEach(user => {
+                const row = document.createElement("tr");
+                row.dataset.userId = user.id;
+                const idCell = document.createElement("td");
+
+                idCell.textContent = user.id;
+                row.appendChild(idCell);
+
+
+                const nameCell = document.createElement("td");
+
+                nameCell.textContent = user.name;
+                row.appendChild(nameCell);
+
+                const rolesCell = document.createElement("td");
+
+                rolesCell.textContent = user.roles;
+                row.appendChild(rolesCell);
+
+                const actionsCell = document.createElement("td");
+
+                const editButton = document.createElement("button");
+                editButton.textContent = "Edit";
+                editButton.className = "btn btn-primary";
+                editButton.addEventListener("click", () => {
+                    editUserId = user.id;
+
+                    const nameInput = document.getElementById("editUserName");
+                    nameInput.value = user.name;
+
+                    const roleSelect = document.querySelector('select[name="role"]');
+                    for (let option of roleSelect.options) {
+                        option.selected = user.roles.includes(option.value);
+                    }
+
+                    $("#editUserModal").modal("show");
+                });
+                actionsCell.appendChild(editButton);
+
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.className = "btn btn-danger";
+                deleteButton.addEventListener("click", () => {
+
+                    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+                    const body = new URLSearchParams();
+                    body.append("_csrf", csrfToken);
+
+                    fetch(`/api/users/${user.id}`, {
+                        method: "DELETE",
+                        body: body
+                    })
+                        .then(response => {
+                            row.remove();
+                        });
+
+                });
+                actionsCell.appendChild(deleteButton);
+
+
+                row.appendChild(actionsCell);
+
+                tableBody.appendChild(row);
+            })
+
+
+        });
+    const editUserButton = document.getElementById("editUserButton");
+    editUserButton.addEventListener("click", () => {
+        const name = document.getElementById("editUserName").value;
+        const password = document.querySelector('input[name="password"]').value;
+        const roleSelect = document.querySelector('select[name="role"]');
+        const roles = Array.from(roleSelect.selectedOptions).map(option => option.value);
+
+        const body = new URLSearchParams();
+        body.append("name", name);
+        body.append("password", password);
+        roles.forEach(role => {
+            body.append("role", role);
+        });
+
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+        body.append("_csrf", csrfToken);
+
+        fetch(`/api/users/${editUserId}`, {
+            method: "PUT",
+            body: body
+        })
+            .then(response => {
+                const row = document.querySelector(`tr[data-user-id="${editUserId}"]`);
+
+                row.children[1].textContent = name;
+                row.children[2].textContent = roles.join(",");
+
+            });
+
+
+    });
+
+    const newUserForm = document.getElementById("newUserForm");
+    newUserForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const name = newUserForm.querySelector('input[name="name"]').value;
+        const password = newUserForm.querySelector('input[name="password"]').value;
+        const roleSelect = newUserForm.querySelector('select[name="role"]');
+        const roles = Array.from(roleSelect.selectedOptions).map(option => option.value);
+
+        const body = new URLSearchParams();
+        body.append("name", name);
+        body.append("password", password);
+
+        roles.forEach(role => {
+            body.append("role", role);
+        });
+
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+        body.append("_csrf", csrfToken);
+
+        fetch("/api/users", {
+            method: "POST",
+            body: body
+        })
+            .then(response => response.json())
+            .then(user => {
+                const tableBody = document.getElementById("usersTableBody");
+
+                const row = document.createElement("tr");
+                row.dataset.userId = user.id;
+
+                const idCell = document.createElement("td");
+                idCell.textContent = user.id;
+                row.appendChild(idCell);
+
+                const nameCell = document.createElement("td");
+                nameCell.textContent = user.name;
+                row.appendChild(nameCell);
+
+                const roleCell = document.createElement("td");
+                roleCell.textContent = user.roles.join(",");
+                row.appendChild(roleCell);
+
+                const actionsCell = document.createElement("td");
+                row.appendChild(actionsCell);
+                const editButton = document.createElement("button");
+                editButton.textContent = "Edit";
+                editButton.className = "btn btn-primary";
+                actionsCell.appendChild(editButton);
+                editButton.addEventListener("click", () => {
+                    editUserId = user.id;
+
+                    const nameInput = document.getElementById("editUserName");
+                    nameInput.value = user.name;
+
+                    const roleSelect = document.querySelector('select[name="role"]');
+                    for (let option of roleSelect.options) {
+                        option.selected = user.roles.includes(option.value);
+                    }
+
+                    $("#editUserModal").modal("show");
+
+                });
+
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.className = "btn btn-danger";
+                actionsCell.appendChild(deleteButton);
+
+                deleteButton.addEventListener("click", () => {
+                    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+                    const body = new URLSearchParams();
+                    body.append("_csrf", csrfToken);
+
+                    fetch(`/api/users/${user.id}`, {
+                        method: "DELETE",
+                        body: body
+                    })
+                        .then(response => {
+                            row.remove();
+                        });
+                });
+
+                tableBody.appendChild(row);
+            });
+    });
+
+
+</script>
 
 </body>
 </html>
