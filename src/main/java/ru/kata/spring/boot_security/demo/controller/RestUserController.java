@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dto.UserDto;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -12,7 +14,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/users")
 public class RestUserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public RestUserController(UserService userService){
         this.userService = userService;
@@ -31,7 +33,7 @@ public class RestUserController {
 
 
     @PutMapping("/{id}")
-    public void updateUserControler(@PathVariable Long id,
+    public void updateUserController(@PathVariable Long id,
                                     @RequestParam String name,
                                     @RequestParam Set<String> role,
                                     @RequestParam String password) {
@@ -58,6 +60,22 @@ public class RestUserController {
                         .toArray(String[]::new));
         return userDto;
     }
+
+    @GetMapping("/me")
+    public UserDto getCurrentUser(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        UserDto  userDto = new UserDto(user.getId(), user.getName(), user.getRoles()
+                .stream()
+                .map(role -> role.getRoleName())
+                .toArray(String[]::new));
+        return userDto;
+    }
+
+    @GetMapping("/csrf")
+    public CsrfToken getCsrfToken(CsrfToken csrfToken) {
+        return csrfToken;
+    }
+
 
 
 
