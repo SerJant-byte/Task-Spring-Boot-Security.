@@ -273,7 +273,10 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            window.location.href = "/admin";
+                            const row = document.querySelector(`tr[data-user-id="${editUserId}"]`);
+                            row.children[1].textContent = name;
+                            row.children[2].textContent = roles.join(",");
+                            $("#editUserModal").modal("hide");
                         } else {
                             console.error("Ошибка редактирования:", response.status);
                         }
@@ -382,7 +385,8 @@
 
                         tableBody.appendChild(row);
 
-                        window.location.href = "/admin";
+                        $('a[href="#usersTable"]').tab('show');
+
 
                     });
             });
@@ -400,11 +404,7 @@
                         [data.headerName]: data.token
                     }
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            window.location.href = "/login";
-                        }
-                    });
+
             });
     });
 
